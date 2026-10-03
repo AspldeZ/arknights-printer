@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.DS_Store
+# Reference screenshots are for analysis only and never committed
+refs/
+references-private/
+coldprint-work/
+output/
