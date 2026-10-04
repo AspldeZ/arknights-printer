@@ -8,7 +8,8 @@ Unofficial fan project, not affiliated with Hypergryph. It keeps the style and n
 
 | | |
 |---|---|
-| ![Noon shadow record](examples/gnomon.png) | ![Tay Bridge inquiry sheet](examples/tay-bridge.png) |
+| ![2D-NMR measurement protocol](examples/2d-nmr.png) | ![Network path protocol](examples/scion.png) |
+| ![Space station ground track](examples/iss-ground-track.png) | ![Space station configuration](examples/iss-configuration.png) |
 
 ## Install
 

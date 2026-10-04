@@ -8,7 +8,8 @@
 
 | | |
 |---|---|
-| ![正午影长测景记录](examples/gnomon.png) | ![泰河大桥事故调查页](examples/tay-bridge.png) |
+| ![二维核磁测量协议](examples/2d-nmr.png) | ![网络路径协议](examples/scion.png) |
+| ![空间站星下点轨迹](examples/iss-ground-track.png) | ![空间站构型](examples/iss-configuration.png) |
 
 ## 安装
 
