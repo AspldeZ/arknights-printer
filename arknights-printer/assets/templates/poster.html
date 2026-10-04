@@ -1,0 +1,116 @@
+<!doctype html>
+<!--
+  Sheet frame for any canvas size. It holds only the frame: issuer and file number,
+  a column for the document type, one sentence, mode tags and a fields table, a hero
+  slot, and the footer (sources, disclaimer, color control strip).
+
+  Size:   set --w / --h on .artboard (1920×1080 landscape, 1080×1350 portrait,
+          1080×1080 square). For 4K, keep 1920×1080 and render at --scale 2.
+  Color:  set --brand / --on-brand inline, chosen from the subject.
+  Hero:   draw the subject's own graphic in #hero; kitHero() makes 1 unit = 1 px of
+          the slot. The hero carries the sheet's density (SKILL.md §5 step 4).
+  Delete what the document does not need; add nothing that has no function.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Geist+Mono:wght@400;500&family=Noto+Sans+SC:wght@500;700;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="../kit.css">
+</head>
+<body>
+<main class="artboard" data-dialect="field" style="--w: 1920px; --h: 1080px; --brand: #fff200; --on-brand: #191919;">
+
+  <!-- Bottom layer: blurred light and streaks -->
+  <svg id="base" class="layer" aria-hidden="true">
+    <defs>
+      <filter id="streaks" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.0007 0.012" numOctaves="2" seed="11"/>
+        <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.5 0 0 0 -0.6"/>
+        <feGaussianBlur stdDeviation="16 0" result="a"/>
+        <feFlood style="flood-color: var(--streak)"/>
+        <feComposite in2="a" operator="in"/>
+      </filter>
+      <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="80"/></filter>
+    </defs>
+    <ellipse id="light" style="fill: var(--light)" opacity=".7" filter="url(#soft)"/>
+    <rect width="100%" height="100%" filter="url(#streaks)" opacity=".16"/>
+  </svg>
+
+  <!-- Middle layer: dot screen -->
+  <div class="layer screen"></div>
+
+  <!-- Top layer: grid dots and crop marks -->
+  <svg id="vec" class="layer" aria-hidden="true" fill="none" style="stroke: var(--grey-2)" stroke-width="1"></svg>
+
+  <header class="sheet-head">
+    <div style="display: flex; gap: 14px; align-items: center;">
+      <!-- Emblem: built from the subject's motif (SKILL.md principle 2) -->
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <path d="M0 0H22L30 8V30H0Z" style="fill: var(--ink)"/>
+        <path d="M8 8H22V13H13V22H8Z" style="fill: var(--ground)"/>
+      </svg>
+      <div>
+        <p class="label p" style="font-size: 11px;">Institution</p>
+        <p class="mono muted p">Department / Division</p>
+      </div>
+    </div>
+    <div style="text-align: right;">
+      <p class="index p">FILE 0000-00</p>
+      <p class="mono muted p">Sheet 01 of 01</p>
+    </div>
+  </header>
+
+  <section class="sheet-body">
+    <div class="sheet-col">
+      <p class="p"><span class="bar">Document type · Subject</span></p>
+      <p class="mono p">The one sentence this sheet says.</p>
+      <div class="tags"><span class="tag">Mode</span><span class="tag on">Current</span><span class="tag">Mode</span></div>
+      <dl class="mono fields">
+        <dt>Parameter</dt><dd>Value · unit</dd>
+        <dt>Parameter</dt><dd>Value · unit</dd>
+        <dt>Parameter</dt><dd>Value · unit</dd>
+      </dl>
+    </div>
+    <div class="sheet-hero">
+      <svg id="hero" aria-hidden="true" fill="none" style="stroke: var(--ink)" stroke-width="1">
+        <!-- HERO: replace with the subject's own graphic, computed from real data -->
+        <rect id="slot" style="stroke: var(--grey-1)" stroke-dasharray="4 6"/>
+      </svg>
+    </div>
+  </section>
+
+  <footer class="sheet-foot">
+    <p class="mono muted p" style="font-size: 9px;">SRC / Source of every figure, year</p>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <svg data-role="texture" width="140" height="7" viewBox="0 0 140 7" aria-hidden="true">
+        <rect x="0" width="20" height="7" fill="#00a0e0"/><rect x="20" width="20" height="7" fill="#e0007a"/>
+        <rect x="40" width="20" height="7" fill="#ffe600"/><rect x="60" width="20" height="7" fill="#141414"/>
+        <rect x="80" width="20" height="7" style="fill: var(--brand)"/><rect x="100" width="20" height="7" fill="#7a8a98"/>
+        <rect x="120" width="20" height="7" fill="#c4c4be"/>
+      </svg>
+      <p class="mono muted p" style="font-size: 9px;">Concept study · not an official publication</p>
+    </div>
+  </footer>
+</main>
+<script src="../kit.js"></script>
+<script>
+  const board = document.querySelector(".artboard");
+  kitOrient(board);
+  const b = kitLayer(document.getElementById("base"));
+  const light = document.getElementById("light");
+  light.setAttribute("cx", b.W * .35); light.setAttribute("cy", b.H * .5);
+  light.setAttribute("rx", b.W * .25); light.setAttribute("ry", b.H * .3);
+  const vec = document.getElementById("vec");
+  kitLayer(vec); kitGrid(vec); kitCropMarks(vec);
+
+  const hero = document.getElementById("hero");
+  const { w, h } = kitHero(hero);
+  const slot = document.getElementById("slot");
+  slot.setAttribute("width", w); slot.setAttribute("height", h);
+
+  kitFit(board);
+</script>
+</body>
+</html>
